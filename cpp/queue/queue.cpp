@@ -15,4 +15,9 @@ QUEUE *createQueue(void)
     return queue;
 }
 
-bool enqueue(QUEUE *que, void *item);
+bool enqueue(QUEUE *que, void *item){
+    QUEUE_NODE *newPtr;
+    if(){
+        
+    }
+};
