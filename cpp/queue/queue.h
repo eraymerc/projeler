@@ -4,6 +4,7 @@
 typedef struct queue
 {
     void *dataPtr;
+    struct node *next;
 } QUEUE_NODE;
 
 typedef struct QUEUE

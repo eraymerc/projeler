@@ -17,7 +17,12 @@ QUEUE *createQueue(void)
 
 bool enqueue(QUEUE *que, void *item){
     QUEUE_NODE *newPtr;
-    if(){
-        
+    if(!(newPtr=(QUEUE_NODE *) malloc(sizeof(QUEUE_NODE)))){
+        return false;
+    }
+    newPtr->dataPtr=item;
+    newPtr->next=NULL;
+    if(queue->count == 0){
+
     }
 };
