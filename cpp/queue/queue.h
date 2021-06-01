@@ -16,6 +16,7 @@ typedef struct QUEUE
 
 QUEUE *createQueue(void);
 
-bool enqueue(QUEUE *que, void *item);
+bool enqueue(QUEUE *queue, void *item);
 
+bool dequeue(QUEUE *queue, void **item);
 #endif
