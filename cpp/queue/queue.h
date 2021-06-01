@@ -1,7 +1,7 @@
 #ifndef QU
 #define QU
 
-typedef struct queue
+typedef struct node
 {
     void *dataPtr;
     struct node *next;
