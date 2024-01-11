@@ -1,8 +1,5 @@
 
 
-my_name = "Eray Mercan"
-my_id = "230102002009"
-my_email = "e.mercan2023@gtu.edu.tr"
 # github.com/eraymerc
 
 # read_file
