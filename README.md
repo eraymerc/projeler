@@ -1,2 +1,2 @@
 # projeler
-Eski, bir işe yaramayan şeyler.
+eski şeyler
