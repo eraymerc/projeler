@@ -74,11 +74,11 @@ void subNumber(struct Bignumber *num1, struct Bignumber *num2){
     complement(num2);
 }
 
-//gelecekte gelistirilecek
+//eklenecek
 void multiplyNumber(struct Bignumber *num1, struct Bignumber *num2){
-    
-}
 
+}
+//0 degerinde sayi veriyor, henuz parse ozelligi eklenmedi
 void initBignumberFromStr(struct Bignumber *num, const char *str) {
     size_t length = strlen(str);
     size_t BignumberSize = (size_t)ceil(BIGNUMBER_RATIO * length);
