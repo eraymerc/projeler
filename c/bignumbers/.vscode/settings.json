@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "bignumbers.h": "c"
+        "bignumbers.h": "c",
+        "math.h": "c"
     }
 }

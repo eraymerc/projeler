@@ -17,7 +17,11 @@ struct Bignumber
     struct BignumberTail *next;
 };
 
-void initBignumber(struct Bignumber *, const char *);
+void initBignumberFromStr(struct Bignumber *, const char *);
+void initBignumberFromInt(struct Bignumber *, int);
 void printBignumberData(struct Bignumber *);
+void addNumber(struct Bignumber *,struct Bignumber *);
+void subNumber(struct Bignumber *, struct Bignumber *);
+void multiplyNumber(struct Bignumber *, struct Bignumber *);
 
 #endif
