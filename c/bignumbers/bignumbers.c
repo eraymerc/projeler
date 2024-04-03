@@ -5,7 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-void addNumber(struct Bignumber *num1, struct Bignumber *num2) {
+/// @brief
+/// @param num1
+/// @param num2
+/// @param lastCarry the last carry for comparison (optional)
+void addNumber(struct Bignumber *num1, struct Bignumber *num2, int *lastCarry) {
     size_t l1 = num1->size;
     size_t l2 = num2->size;
     size_t length = (l1 > l2) * (l1) + (l1 < l2) * (l2) + (l1 == l2) * l1;
@@ -16,12 +20,11 @@ void addNumber(struct Bignumber *num1, struct Bignumber *num2) {
     int sum = 0;
     int n1 = current1->data, n2 = current2->data;
     for (size_t i = 0; i < length; i++) {
-        
         sum = n1 + n2 + carry;
         current1->data = sum % 256;
         carry = sum / 256;
 
-        if (current1->next == NULL && (i+1) != length) {
+        if (current1->next == NULL && (i + 1) != length) {
             struct BignumberTail *new =
                 (struct BignumberTail *)malloc(sizeof(struct BignumberTail));
             if (new == NULL) {
@@ -34,51 +37,73 @@ void addNumber(struct Bignumber *num1, struct Bignumber *num2) {
             new->next = NULL;
             current1->next = new;
         }
-        if (current1->next != NULL)
-        {
+        if (current1->next != NULL) {
             current1 = current1->next;
             n1 = current1->data;
-        }else
-        {
+        } else {
             n1 = 0;
         }
-        if (current2->next != NULL)
-        {
+        if (current2->next != NULL) {
             current2 = current2->next;
             n2 = current2->data;
-        }else
-        {
+        } else {
             n2 = 0;
         }
     }
 }
-void complement(struct Bignumber *num){
+
+void complement(struct Bignumber *num) {
     size_t len = num->size;
     struct BignumberTail *current = num->next;
-    for (size_t i = 0; i < len; i++)
-    {
+    for (size_t i = 0; i < len; i++) {
         current->data = (0xFF - current->data);
-        if (current->next != NULL)
-        {
-            current = current->next; 
+        if (current->next != NULL) {
+            current = current->next;
         }
     }
     struct Bignumber one;
-    initBignumberFromInt(&one,1);
-    addNumber(num,&one);
+    initBignumberFromInt(&one, 1);
+    addNumber(num, &one, NULL);
 }
 
-void subNumber(struct Bignumber *num1, struct Bignumber *num2){
+void subNumber(struct Bignumber *num1, struct Bignumber *num2) {
     complement(num2);
-    addNumber(num1,num2);
+    addNumber(num1, num2, NULL);
     complement(num2);
 }
 
-//eklenecek
-void multiplyNumber(struct Bignumber *num1, struct Bignumber *num2){
+struct Bignumber *copyNumber(struct Bignumber *num) {
+    if (num == NULL) {
+        return NULL;
+    } else if (num->size == 0 || num->size == 0 || num->next == NULL) {
+        return NULL;
+    }
 
+    struct Bignumber *result =
+        (struct Bignumber *)malloc(sizeof(struct Bignumber));
+
+    initBignumberFromInt(result, 0);
+    addNumber(result, num);
+    return result;
 }
-//0 degerinde sayi veriyor, henuz parse ozelligi eklenmedi
+
+enum Comparison compareNumbers(struct Bignumber *num1, struct Bignumber *num2) {
+    struct Bignumber *copy = copyNumber(num1);
+    subNumber(copy, num2);
+
+    // copy == 0 return EQUAL
+    return EQUAL;
+    // copy < 0 return LOW
+
+    // copy > 0 return HIGH
+}
+
+// eklenecek
+void multiplyNumber(struct Bignumber *num1, struct Bignumber *num2) {}
+
+void karatsubaMul(struct Bignumber *num1, struct Bignumber *num2) {}
+
+// 0 degerinde sayi veriyor, henuz parse ozelligi eklenmedi
 void initBignumberFromStr(struct Bignumber *num, const char *str) {
     size_t length = strlen(str);
     size_t BignumberSize = (size_t)ceil(BIGNUMBER_RATIO * length);
