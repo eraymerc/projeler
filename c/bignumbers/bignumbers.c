@@ -50,6 +50,7 @@ void addNumber(struct Bignumber *num1, struct Bignumber *num2, int *lastCarry) {
             n2 = 0;
         }
     }
+    //*lastCarry = carry;
 }
 
 void complement(struct Bignumber *num) {
@@ -66,9 +67,9 @@ void complement(struct Bignumber *num) {
     addNumber(num, &one, NULL);
 }
 
-void subNumber(struct Bignumber *num1, struct Bignumber *num2) {
+void subNumber(struct Bignumber *num1, struct Bignumber *num2, int* lastCarry) {
     complement(num2);
-    addNumber(num1, num2, NULL);
+    addNumber(num1, num2, lastCarry);
     complement(num2);
 }
 
@@ -83,13 +84,13 @@ struct Bignumber *copyNumber(struct Bignumber *num) {
         (struct Bignumber *)malloc(sizeof(struct Bignumber));
 
     initBignumberFromInt(result, 0);
-    addNumber(result, num);
+    addNumber(result, num, NULL);
     return result;
 }
 
 enum Comparison compareNumbers(struct Bignumber *num1, struct Bignumber *num2) {
     struct Bignumber *copy = copyNumber(num1);
-    subNumber(copy, num2);
+    subNumber(copy, num2,NULL);
 
     // copy == 0 return EQUAL
     return EQUAL;
