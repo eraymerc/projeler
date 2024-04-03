@@ -6,6 +6,11 @@
 #include <string.h>
 
 void addNumber(struct Bignumber *num1, struct Bignumber *num2) {
+    struct Bignumber zero;
+    initBignumberFromInt(&zero, 0);
+    char sign1 = compareNumbers(num1, &zero);
+    char prevsign1 = sign1;
+
     size_t l1 = num1->size;
     size_t l2 = num2->size;
     size_t length = (l1 > l2) * (l1) + (l1 < l2) * (l2) + (l1 == l2) * l1;
@@ -20,7 +25,9 @@ void addNumber(struct Bignumber *num1, struct Bignumber *num2) {
         current1->data = sum % 256;
         carry = sum / 256;
 
-        if (current1->next == NULL && (i + 1) != length) {
+        sign1 = compareNumbers(num1, &zero);
+
+        if ((((void *)(current1->next)) == NULL) && (sign1 != prevsign1)) {
             struct BignumberTail *new =
                 (struct BignumberTail *)malloc(sizeof(struct BignumberTail));
             if (new == NULL) {
@@ -29,7 +36,7 @@ void addNumber(struct Bignumber *num1, struct Bignumber *num2) {
             }
 
             num1->size += 1;
-            new->data = 0;
+            new->data = carry;
             new->next = NULL;
             current1->next = new;
         }
@@ -82,15 +89,15 @@ char compareNumbers(struct Bignumber *num1, struct Bignumber *num2) {
     size_t s2 = num2->size;
     size_t length = (s1 > s2) * (s1) + (s1 < s2) * (s2) + (s1 == s2) * s1;
     char result = s1 > s2;
-    size_t m1 = 0;  // index of num1's first sigfig
-    size_t m2 = 0;  // index of num2's first sigfig
+    size_t m1 = s1;  // index of num1's first sigfig
+    size_t m2 = s2;  // index of num2's first sigfig
 
     char sign1 = 0;  // -1 if negative 1 if positive
     char sign2 = 0;
 
     struct BignumberTail *h1 = num1->next;
     struct BignumberTail *h2 = num2->next;
-    for (size_t i = 0; i < length; i++) {
+    /*for (size_t i = 0; i < length; i++) {
         if (h1->next != NULL) {
             if ((h1->next->data == 0 && h1->data != 0) ||
                 (h1->next->data == 255 && h1->data != 255)) {
@@ -107,15 +114,15 @@ char compareNumbers(struct Bignumber *num1, struct Bignumber *num2) {
         }
     }
     h1 = num1->next;
-    h2 = num2->next;
-    for (size_t i = 0; i < m1; i++) {
+    h2 = num2->next;*/
+    for (size_t i = 0; i < m1-1; i++) {
         h1 = h1->next;
     }
-    for (size_t i = 0; i < m2; i++) {
+    for (size_t i = 0; i < m2-1; i++) {
         h2 = h2->next;
     }
-    sign1 = (char)(-1 * (h1->next->data > 127) + 1 * (h1->next->data < 128));
-    sign2 = (char)(-1 * (h2->next->data > 127) + 1 * (h2->next->data < 128));
+    sign1 = (char)(-1 * (h1->data > 127) + 1 * (h1->data < 128));
+    sign2 = (char)(-1 * (h2->data > 127) + 1 * (h2->data < 128));
     if (sign1 > sign2) {
         return 1;  // num1 > num2
     } else if (sign2 > sign1) {
@@ -197,10 +204,13 @@ void initBignumberFromInt(struct Bignumber *num, int num_val) {
     for (int mem = num_val; mem > 0; mem /= 10) {
         length++;
     }
+    if (num_val == 0) {
+        length = 1;
+    }
 
     size_t BignumberSize = (size_t)ceil(BIGNUMBER_RATIO * length);
 
-    num->size = BignumberSize + 1;  // 1 byte gap
+    num->size = BignumberSize;  // 1 byte gap
     num->next = NULL;
 
     struct BignumberTail *current = num->next;
@@ -221,8 +231,10 @@ void initBignumberFromInt(struct Bignumber *num, int num_val) {
         } else {
             current->data = num_val % 256;
             num_val /= 256;
-            current->next = new;
-            current = new;
+            if (num_val != 0) {
+                current->next = new;
+                current = new;
+            }
         }
     }
 }
