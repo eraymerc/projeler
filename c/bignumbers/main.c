@@ -8,10 +8,15 @@ int main(int argc, char const *argv[]) {
     // initBignumber(&num1, "230102002009");
     initBignumberFromInt(&num1, 1984);  // add negative number support, sifir
                                         // oldugunda kiyaslama hata veriyor, coz
-    initBignumberFromInt(&num2, 2000);
+    initBignumberFromInt(&num2, 63488);
     initBignumberFromInt(&num3, 10);
-
-    //printBignumberData(&num3);
+    complement(&num1);
+    //complement(&num2);
+    printf("63488 : ");
+    printBignumberData(&num2);
+    printf("-63488 : ");
+    complement(&num2);
+    printBignumberData(&num2);
     // addNumber(&num1, &num2);
 
     // complement(&num1);
@@ -19,10 +24,20 @@ int main(int argc, char const *argv[]) {
     //subNumber(&num1, &num2);
     for (size_t i = 0; i < 20; i++)
     {
+        printf("%zu : \n", i);
+        printBignumberData(&num1);
+        complement(&num1);
+        printBignumberData(&num1);
+        complement(&num1);
+        addNumber(&num1, &num1);
+    }/*
+    for (size_t i = 0; i < 20; i++)
+    {
         printf("%zu : ", i);
         printBignumberData(&num1);
         addNumber(&num1, &num1);
-    }
+        
+    }*/
     
     printf("num1 : \n");
 

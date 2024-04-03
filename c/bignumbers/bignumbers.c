@@ -115,10 +115,10 @@ char compareNumbers(struct Bignumber *num1, struct Bignumber *num2) {
     }
     h1 = num1->next;
     h2 = num2->next;*/
-    for (size_t i = 0; i < m1-1; i++) {
+    for (size_t i = 0; i < m1 - 1; i++) {
         h1 = h1->next;
     }
-    for (size_t i = 0; i < m2-1; i++) {
+    for (size_t i = 0; i < m2 - 1; i++) {
         h2 = h2->next;
     }
     sign1 = (char)(-1 * (h1->data > 127) + 1 * (h1->data < 128));
@@ -136,7 +136,8 @@ char compareNumbers(struct Bignumber *num1, struct Bignumber *num2) {
         return -1;
     }
 
-    // if not worked scan backward
+    // need fix
+    //  if not worked scan backward
     if (m1 == m2) {
         for (size_t i = m1 + 1; i > 0; i--) {
             h1 = num1->next;
@@ -215,7 +216,7 @@ void initBignumberFromInt(struct Bignumber *num, int num_val) {
 
     struct BignumberTail *current = num->next;
 
-    for (size_t i = 0; i < BignumberSize + 1; i++) {
+    for (size_t i = 0; i < BignumberSize; i++) {
         struct BignumberTail *new =
             (struct BignumberTail *)malloc(sizeof(struct BignumberTail));
         if (new == NULL) {
@@ -223,18 +224,15 @@ void initBignumberFromInt(struct Bignumber *num, int num_val) {
             exit(1);
         }
         new->next = NULL;
-        new->data = 0;
-
-        if (current == NULL) {
+        new->data = num_val % 256;
+        
+        num_val /= 256;
+        if (i == 0) {
             num->next = new;
             current = new;
         } else {
-            current->data = num_val % 256;
-            num_val /= 256;
-            if (num_val != 0) {
-                current->next = new;
-                current = new;
-            }
+            current->next = new;
+            current = new;
         }
     }
 }
