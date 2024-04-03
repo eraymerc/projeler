@@ -24,5 +24,6 @@ void addNumber(struct Bignumber *,struct Bignumber *);
 void subNumber(struct Bignumber *, struct Bignumber *);
 void multiplyNumber(struct Bignumber *, struct Bignumber *);
 struct Bignumber *copyNumber(struct Bignumber *);
+char compareNumbers(struct Bignumber *num1, struct Bignumber *num2);
 
 #endif

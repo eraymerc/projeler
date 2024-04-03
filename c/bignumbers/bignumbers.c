@@ -83,6 +83,44 @@ struct Bignumber *copyNumber(struct Bignumber *num) {
     return result;
 }
 
+char compareNumbers(struct Bignumber *num1, struct Bignumber *num2){
+    //most significant bit (is negative or positive)
+    size_t s1 = num1->size;
+    size_t s2 = num2->size;
+    size_t length = (s1 > s2) * (s1) + (s1 < s2) * (s2) + (s1 == s2) * s1; 
+    char result = s1>s2; 
+    size_t m1 = 0; //index of num1's first sigfig
+    size_t m2 = 0; //index of num2's first sigfig
+
+    char sign1 = 0; // -1 if negative 1 if positive
+    char sign2 = 0;
+
+    struct BignumberTail *h1 = num1->next;
+    struct BignumberTail *h2 = num2->next;
+    for (size_t i = 0; i < length; i++)
+    {
+        if (h1->next != NULL)
+        {
+            if (h1->next->data != 0)
+            {
+                m1 = i;
+            }
+            h1 = h1->next;
+        }
+        if (h2->next != NULL)
+        {
+            if (h2->next->data != 0)
+            {
+                m2 = i;
+            }
+            h2 = h2->next;
+        }
+        
+    }
+    printf("\n-\n");
+
+}
+
 void subNumber(struct Bignumber *num1, struct Bignumber *num2){
     complement(num2);
     addNumber(num1,num2);

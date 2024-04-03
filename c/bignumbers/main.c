@@ -9,6 +9,7 @@ int main(int argc, char const *argv[])
     initBignumberFromInt(&num2, 60000);
     printBignumberData(&num1);
     addNumber(&num1,&num2);
+    compareNumbers(&num1,&num2);
     printBignumberData(&num1);
     printBignumberData(&num2);
 
