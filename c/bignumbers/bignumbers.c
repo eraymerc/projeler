@@ -68,6 +68,21 @@ void complement(struct Bignumber *num){
     addNumber(num,&one);
 }
 
+struct Bignumber *copyNumber(struct Bignumber *num) {
+    if (num == NULL) {
+        return NULL;
+    } else if (num->size == 0 || num->size == 0 || num->next == NULL) {
+        return NULL;
+    }
+
+    struct Bignumber *result =
+        (struct Bignumber *)malloc(sizeof(struct Bignumber));
+
+    initBignumberFromInt(result, 0);
+    addNumber(result, num);
+    return result;
+}
+
 void subNumber(struct Bignumber *num1, struct Bignumber *num2){
     complement(num2);
     addNumber(num1,num2);
